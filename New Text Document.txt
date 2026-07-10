@@ -1,0 +1,131 @@
+===============================
+🚀 PROJECT START COMMANDS
+===============================
+
+--------------------------------
+1️⃣ START HYPERLEDGER FABRIC
+--------------------------------
+
+cd ~/fabric-samples/test-network
+
+./network.sh up createChannel -c mychannel -ca
+
+./network.sh deployCC -ccn ehr -ccp ~/chaincode/ehr -ccl go
+
+
+--------------------------------
+2️⃣ SET FABRIC ENV VARIABLES
+--------------------------------
+
+export PATH=${PWD}/../bin:$PATH
+export FABRIC_CFG_PATH=$PWD/../config/
+
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_LOCALMSPID="Org1MSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+export CORE_PEER_ADDRESS=localhost:7051
+
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+
+
+--------------------------------
+3️⃣ START IPFS
+--------------------------------
+
+# If using Docker
+docker start ipfs_node
+
+# Check IPFS
+curl -X POST http://localhost:5001/api/v0/id
+
+
+--------------------------------
+4️⃣ START BACKEND
+--------------------------------
+
+# Go to backend folder (example)
+cd ~/ehr_system/backend
+
+# If using Spring Boot
+./mvnw spring-boot:run
+
+# OR
+mvn spring-boot:run
+
+# OR if jar file
+java -jar app.jar
+
+
+--------------------------------
+5️⃣ START AI SERVICE (if used)
+--------------------------------
+
+cd ~/ehr_system/ai
+
+uvicorn main:app --reload
+
+
+--------------------------------
+6️⃣ START FRONTEND
+--------------------------------
+
+cd ~/ehr_system/frontend
+
+# If React
+npm install
+npm start
+
+# OR if plain HTML
+open index.html
+
+
+--------------------------------
+7️⃣ TEST BLOCKCHAIN (OPTIONAL)
+--------------------------------
+
+peer chaincode invoke -o localhost:7050 \
+--ordererTLSHostnameOverride orderer.example.com \
+--tls \
+--cafile $ORDERER_CA \
+-C mychannel \
+-n ehr \
+--peerAddresses localhost:7051 \
+--tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem \
+--peerAddresses localhost:9051 \
+--tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem \
+--waitForEvent \
+-c '{"Args":["CreateRecord","1","patient1","QmTest123","Diabetes"]}'
+
+
+--------------------------------
+8️⃣ QUERY DATA
+--------------------------------
+
+peer chaincode query -C mychannel -n ehr \
+-c '{"Args":["GetAllRecords"]}'
+
+
+--------------------------------
+9️⃣ CHECK SERVICES
+--------------------------------
+
+# Check Fabric containers
+docker ps
+
+# Check IPFS
+curl -X POST http://localhost:5001/api/v0/id
+
+
+===============================
+✅ SYSTEM READY FOR DEMO
+===============================
+start cmd /k "cd backend && python app.py" & start cmd /k "cd frontend && streamlit run main.py"
+
+
+
+http://localhost:8080/ipfs/QmRkPVLS1kukB28daeTubeX3ZpNVrmivAbjNY6dwbvxPkV
+
+python app.py
+
+streamlit run main.py
