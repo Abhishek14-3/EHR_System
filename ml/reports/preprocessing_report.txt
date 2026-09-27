@@ -1,0 +1,38 @@
+
+==========================================
+HEALTHCHAIN PREPROCESSING REPORT
+==========================================
+
+Rows After Cleaning : 25500
+
+Columns : 18
+
+Features
+
+['Age', 'Gender', 'Glucose', 'Blood Pressure', 'BMI', 'Oxygen Saturation', 'LengthOfStay', 'Cholesterol', 'Triglycerides', 'HbA1c', 'Smoking', 'Alcohol', 'Physical Activity', 'Diet Score', 'Family History', 'Stress Level', 'Sleep Hours', 'Medical Condition']
+
+Target
+
+Medical Condition
+
+Scaling
+
+StandardScaler
+
+Encoding
+
+Gender -> LabelEncoder
+
+Medical Condition -> LabelEncoder
+
+Saved Files
+
+gender_encoder.pkl
+
+label_encoder.pkl
+
+scaler.pkl
+
+feature_columns.pkl
+
+==========================================

@@ -1,0 +1,46 @@
+
+===============================
+HEALTHCHAIN DATASET REPORT
+===============================
+
+Rows : 30000
+Columns : 20
+
+Duplicate Rows :
+0
+
+Missing Values
+Age                  4500
+Gender               4500
+Medical Condition    4500
+Glucose              4500
+Blood Pressure       4500
+BMI                     0
+Oxygen Saturation       0
+LengthOfStay            0
+Cholesterol             0
+Triglycerides           0
+HbA1c                   0
+Smoking                 0
+Alcohol                 0
+Physical Activity       0
+Diet Score              0
+Family History          0
+Stress Level            0
+Sleep Hours             0
+random_notes            0
+noise_col               0
+dtype: int64
+
+Numerical Features
+['Age', 'Glucose', 'Blood Pressure', 'BMI', 'Oxygen Saturation', 'LengthOfStay', 'Cholesterol', 'Triglycerides', 'HbA1c', 'Smoking', 'Alcohol', 'Physical Activity', 'Diet Score', 'Family History', 'Stress Level', 'Sleep Hours', 'noise_col']
+
+Categorical Features
+['Gender', 'Medical Condition', 'random_notes']
+
+Recommended Columns To Remove
+
+random_notes
+noise_col
+
+===============================

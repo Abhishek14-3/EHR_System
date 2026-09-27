@@ -1,16 +1,37 @@
-# React + Vite
+# ⚛️ `web_frontend/` — Future React Single-Page Application (SPA)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Status:** 🚧 **PLANNED / FUTURE WORKMODULE (NOT CURRENTLY FUNCTIONAL)**  
+> **Primary Interface:** The fully functional, production interface for HealthChain AI is the **Streamlit Dashboard** located in `frontend/main.py`.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📌 Overview
 
-## React Compiler
+This directory contains the initial Vite + React project structure intended for a future web-native Single Page Application (SPA) alternative to the Streamlit dashboard.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Currently, this folder contains starter boilerplate and is **not connected to the Flask API backend**.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⚙️ Primary Production Interface
+
+To run the active, operational user portal, use the Streamlit application:
+
+```bash
+# From project root
+cd frontend
+streamlit run main.py
+```
+
+---
+
+## 🚀 Roadmap for `web_frontend/`
+
+When active development on the React SPA begins, it will feature:
+- Modern React 18 / Vite architecture with Tailwind CSS styling
+- Full REST API integration with `backend/app.py`
+- Patient & Doctor role-based navigation & JWT session handling
+- Web-native PDF report rendering and interactive vital input forms
+
+---
+*For full architecture details, refer to `project_analysis.md` in the project root.*

@@ -29,11 +29,7 @@ The core engine of the system.
 - **Tech Stack:** Python (Streamlit).
 - **Structure:** `main.py` provides a rich, CSS-styled portal to log in, upload records, grant access (if Patient), or predict heart risk and view records (if Doctor). It makes REST requests to `http://127.0.0.1:5000`.
 
-### 3. `web_frontend/` (Modern React/Vite SPA - Optional/Future)
-- **Role:** A modern web UI potentially serving as a sleeker alternative to the Streamlit app.
-- **Tech Stack:** Node.js, React, Vite, Tailwind/CSS.
-
-### 4. `blockchain/` (Hyperledger Fabric Smart Contracts)
+### 3. `blockchain/` (Hyperledger Fabric Smart Contracts)
 - **Role:** The decentralized ledger logic determining data ownership, immutability, and state transitions.
 - **Tech Stack:** Golang (`contractapi`).
 - **Chaincode (`ehr_contract.go`):** 
@@ -41,9 +37,19 @@ The core engine of the system.
   - `GrantAccess`: Allows pushing a Doctor's ID to the `AuthorizedUsers` array.
   - `GetRecordsByDoctor`: Iterates through the ledger and returns only records where the Doctor's ID is in the `AuthorizedUsers` array.
 
-### 5. `ml_model/` (Predictive AI)
+### 4. `ml/` (Predictive AI Engine)
 - **Role:** Provides diagnostic capabilities to Doctors.
-- **Pre-trained Models:** Includes `heart_model.joblib` (a binary classification model predicting presence of heart disease) and `scaler.joblib` (for normalizing the 13 clinical vitals inputted by the doctor).
+- **Pre-trained Models:** Includes `best_model.pkl` (Random Forest model predicting across 7 condition classes), `scaler.pkl`, and SHAP TreeExplainer visualization logic in `predict.py`.
+
+---
+
+## 🚧 Planned / Not Yet Implemented Modules
+
+### `web_frontend/` (Future React Single-Page Application)
+- **Status:** **PLANNED / FUTURE WORKMODULE (UNIMPLEMENTED)**
+- **Description:** A placeholder Vite + React single-page application structure intended for future web-native interface expansion.
+- **Current Operational Interface:** The active production interface is the Streamlit app in `frontend/main.py`. `web_frontend/` contains default boilerplate and is not currently integrated with the backend APIs.
+
 
 ---
 
@@ -77,13 +83,16 @@ The core engine of the system.
 
 ---
 
-## 🔐 Security & Flaw Analysis
 
-**Strengths:**
-- **Decentralization:** Raw files are kept off the blockchain (preventing ledger bloat), utilizing IPFS for sheer storage efficiency, while Fabric ensures governance.
-- **Immutability:** Hyperledger Fabric is enterprise-grade. Data access is baked directly into the Go Chaincode logic natively.
-- **Authentication:** Standard JWT-based middleware ensures state-less scaling for the Flask backend.
+---
 
-**Areas Configured for "Test Environment":**
-- `CLI_CONTAINER / MSP Overrides`: The `fabric_utils.py` currently forces the identity of `User1@org1.example.com` for *all* blockchain transactions, regardless of who is logged into Flask. In a pure production environment, Hyperledger Fabric CA would generate unique certificates for *each* individual patient and doctor.
-- IPFS is running on a local node `127.0.0.1:5001`. In production, you'd likely pin to persistent peers like Pinata or Infura.
+## 🎯 ML Model Characteristics & Intentional Design Decisions
+
+### 1. Asymmetric Cancer Risk Threshold Policy
+- `Cancer` predictions are assigned a **"High Risk"** classification at a calibrated confidence threshold of **$\ge 0.25$** (compared to $\ge 0.40$ for all other conditions: Asthma, Arthritis, Diabetes, Hypertension, Obesity).
+- **Clinical Precaution Rationale:** Cancer is a high-stakes, life-threatening condition where a false negative (under-triaging potential malignancy) carries far severe clinical risks than a false positive. Lowering the threshold to 0.25 (just above 14.28% random chance across 7 classes) ensures potential cancer indicators receive immediate clinical review.
+- **Asymmetry Check:** No other class utilizes an asymmetric threshold.
+
+### 2. Known Model Limitations & Reliability Boundaries
+- **Arthritis Recall Deficit:** `Arthritis` exhibits the lowest recall (**64.35%**) among all 7 target classes due to feature overlap in synthetic data. Predictions for Arthritis should be treated as lower-confidence clinical indicators.
+- **Boundary Cutoff Sensitivity:** Patients with vitals sitting 1 point past binary healthy override limits (e.g., Blood Pressure = 121 mmHg vs 120 mmHg cutoff) bypass the `apply_clinical_safety_override` layer and are evaluated directly by the underlying Random Forest model.

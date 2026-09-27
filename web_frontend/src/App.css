@@ -118,6 +118,7 @@
   a {
     color: var(--text-h);
     font-size: 16px;
+    font-family: var(--font-h2);
     border-radius: 6px;
     background: var(--social-bg);
     display: flex;

@@ -16,6 +16,15 @@ def init_db():
             role TEXT NOT NULL
         )
     ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS mock_records (
+            id TEXT PRIMARY KEY,
+            patient_id TEXT NOT NULL,
+            ipfs_hash TEXT NOT NULL,
+            prediction TEXT NOT NULL,
+            authorized_users TEXT NOT NULL
+        )
+    ''')
     conn.commit()
     conn.close()
 
